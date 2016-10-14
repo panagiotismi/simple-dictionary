@@ -34,13 +34,14 @@ LookUp.prototype.find = function (word) {
                  .length;
 };
 
+// Test prototype
 function main() {
   var list = new LookUp(0)
-  var n = parseInt(readLine());
-  for (var a0 = 0; a0 < n; a0++) {
-    var op_temp = readLine().split(' ');
-    var op = op_temp[0];
-    var contact = op_temp[1];
+  var n = parseInt(INPUT);
+  for (var i = 0; i < n; i++) {
+    var temp = INPUT.split(' ');
+    var op = temp[0];
+    var contact = temp[1];
 
     if (op == 'add')
       list.add(contact);
