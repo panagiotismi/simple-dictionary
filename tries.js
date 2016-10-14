@@ -45,6 +45,7 @@ Trie.prototype._find = function (node, word) {
     return 0;
 };
 
+// Test prototype
 function main() {
   var trie = new Trie();
   var n = parseInt(INPUT);
