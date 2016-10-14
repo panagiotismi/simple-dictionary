@@ -1,33 +1,28 @@
-function LookUp(level) {
-  this.item = new Map();
-  this.level = level;
-  this.nextNode = null;
+function LookUp() {
+  this.levels = new Map();
+  this.populate = function (index) {
+    if (!this.levels.has(index))
+      this.levels.set(index, new Map());
+    return this.levels.get(index);
+  };
 }
+
 LookUp.prototype.add = function (word) {
-  var node = this;
   for (var i = 0; i < word.length; i++) {
+    var node = this.populate(i);
     var key = word.charAt(i);
     var value = word.slice(0, i + 1);
-    if (node.item.has(key))
-      node.item.get(key).push(value);
+    if (node.has(key))
+      node.get(key).push(value);
     else
-      node.item.set(key, [value]);
-    if (!node.nextNode)
-      node.nextNode = new LookUp(i + 1);
-    node = node.nextNode;
+      node.set(key, [value]);
   }
 };
 LookUp.prototype.find = function (word) {
-  var node = this;
+  var node = this.levels.get(word.length - 1);
   var key = word.charAt(word.length - 1);
-  while (node.level < word.length - 1) {
-    if (node.nextNode)
-      node = node.nextNode;
-    else
-      return 0;
-  }
-  if (node.item.has(key))
-    var prefixes = node.item.get(key);
+  if (node && node.has(key))
+    var prefixes = node.get(key);
   else
     return 0;
   return prefixes.filter(function (value) { return value == word; })
@@ -36,7 +31,7 @@ LookUp.prototype.find = function (word) {
 
 // Test prototype
 function main() {
-  var list = new LookUp(0)
+  var dict = new LookUp()
   var n = parseInt(INPUT);
   for (var i = 0; i < n; i++) {
     var temp = INPUT.split(' ');
@@ -44,8 +39,8 @@ function main() {
     var contact = temp[1];
 
     if (op == 'add')
-      list.add(contact);
+      dict.add(contact);
     else
-      console.log(list.find(contact));
+      console.log(dict.find(contact));
   }
 }
